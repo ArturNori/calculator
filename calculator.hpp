@@ -64,6 +64,7 @@
 #include <string>
 #include <sstream>
 #include <stack>
+#include <math.h>
 #include <cstddef>
 #include <cctype>
 
@@ -143,6 +144,7 @@ private:
     OPERATOR_DIVISION,       /// /
     OPERATOR_MODULO,         /// %
     OPERATOR_POWER,          /// **
+    OPERATOR_LOG,
     OPERATOR_EXPONENT        /// e, E
   };
 
@@ -241,6 +243,7 @@ private:
       case OPERATOR_DIVISION:       return v1 / checkZero(v2);
       case OPERATOR_MODULO:         return v1 % checkZero(v2);
       case OPERATOR_POWER:          return pow(v1, v2);
+      case OPERATOR_LOG:          return log(v2);
       case OPERATOR_EXPONENT:       return v1 * pow(10, v2);
       default:                      return 0;
     }
@@ -310,6 +313,7 @@ private:
       case '*': index_++; if (getCharacter() != '*')
                               return Operator(OPERATOR_MULTIPLICATION, 20, 'L');
                 index_++;     return Operator(OPERATOR_POWER,          30, 'R');
+      case 'l': expect("lg"); return Operator(OPERATOR_LOG,    4, 'R');
       case 'e': index_++;     return Operator(OPERATOR_EXPONENT,       40, 'R');
       case 'E': index_++;     return Operator(OPERATOR_EXPONENT,       40, 'R');
       default :               return Operator(OPERATOR_NULL,            0, 'L');
